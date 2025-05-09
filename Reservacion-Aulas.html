@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Sistema de Reserva de Aulas - MIUMG</title>
+    <link
+      rel="stylesheet"
+      href="styles.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Sistema de Reserva de Aulas</h1>
+        <p>Universidad Mariano Gálvez de Guatemala</p>
+      </header>
+
+      <div id="auth-section">
+        <div class="auth-forms">
+          <div class="form-container">
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form">
+              <div class="form-group">
+                <label for="login-email">Correo Institucional</label>
+                <input
+                  type="email"
+                  id="login-email"
+                  required
+                  placeholder="usuario@miumg.edu.gt"
+                />
+              </div>
+              <div class="form-group">
+                <label for="login-password">Contraseña</label>
+                <input
+                  type="password"
+                  id="login-password"
+                  required
+                />
+              </div>
+              <button type="submit">Iniciar Sesión</button>
+            </form>
+          </div>
+
+          <div class="form-container">
+            <h2>Registrarse</h2>
+            <form id="register-form">
+              <div class="form-group">
+                <label for="register-name">Nombre Completo</label>
+                <input
+                  type="text"
+                  id="register-name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="register-email">Correo Institucional</label>
+                <input
+                  type="email"
+                  id="register-email"
+                  required
+                  placeholder="usuario@miumg.edu.gt"
+                />
+              </div>
+              <div class="form-group">
+                <label for="register-password">Contraseña</label>
+                <input
+                  type="password"
+                  id="register-password"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="register-id">Carné o Identificación</label>
+                <input
+                  type="text"
+                  id="register-id"
+                  required
+                />
+              </div>
+              <button type="submit">Registrarse</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="app-section"
+        class="hidden"
+      >
+        <div class="tabs">
+          <div
+            class="tab active"
+            data-tab="availability"
+          >
+            Disponibilidad
+          </div>
+          <div
+            class="tab"
+            data-tab="my-reservations"
+          >
+            Mis Reservas
+          </div>
+          <div
+            id="admin-tab"
+            class="tab hidden"
+            data-tab="admin"
+          >
+            Administración
+          </div>
+          <div
+            class="tab"
+            data-tab="profile"
+          >
+            Perfil
+          </div>
+          <div
+            class="tab"
+            style="margin-left: auto"
+            id="logout-tab"
+          >
+            Cerrar Sesión
+          </div>
+        </div>
+
+        <div
+          id="availability"
+          class="tab-content active"
+        >
+          <h2>Disponibilidad de Aulas</h2>
+          <div class="form-group">
+            <label for="reservation-date">Fecha:</label>
+            <input
+              type="date"
+              id="reservation-date"
+              required
+            />
+          </div>
+          <div class="classroom-selector">
+            <label for="classroom-select">Aula:</label>
+            <select id="classroom-select">
+              <option value="A101">A101 (Capacidad: 30)</option>
+              <option value="A102">A102 (Capacidad: 25)</option>
+              <option value="B201">B201 (Capacidad: 40)</option>
+              <option value="B202">B202 (Capacidad: 35)</option>
+              <option value="C301">C301 (Capacidad: 50)</option>
+            </select>
+          </div>
+          <button id="check-availability">Ver Disponibilidad</button>
+
+          <div
+            id="availability-result"
+            class="hidden"
+          >
+            <h3>
+              Horarios Disponibles para <span id="selected-date"></span> en
+              <span id="selected-classroom"></span>
+            </h3>
+            <div
+              class="availability-grid"
+              id="time-slots"
+            >
+              <!-- Los horarios se generarán dinámicamente -->
+            </div>
+
+            <div
+              id="reservation-form"
+              class="hidden"
+            >
+              <h3>Reservar Aula</h3>
+              <div class="form-group">
+                <label for="reservation-purpose">Propósito:</label>
+                <select id="reservation-purpose">
+                  <option value="Proyecto">Proyecto</option>
+                  <option value="Reunión">Reunión</option>
+                  <option value="Tutoría">Tutoría</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="reservation-details">Detalles adicionales:</label>
+                <input
+                  type="text"
+                  id="reservation-details"
+                  placeholder="Describe el propósito con más detalle"
+                />
+              </div>
+              <button id="submit-reservation">Solicitar Reserva</button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="my-reservations"
+          class="tab-content"
+        >
+          <h2>Mis Reservas</h2>
+          <div id="reservations-list">
+            <table>
+              <thead>
+                <tr>
+                  <th>Aula</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Propósito</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="reservations-table-body">
+                <!-- Las reservas se cargarán dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          id="admin"
+          class="tab-content"
+        >
+          <h2>Panel de Administración</h2>
+          <div id="pending-reservations">
+            <h3>Solicitudes Pendientes</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Estudiante</th>
+                  <th>Aula</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Propósito</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="pending-reservations-body">
+                <!-- Las solicitudes pendientes se cargarán dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+
+          <div
+            id="all-reservations"
+            style="margin-top: 30px"
+          >
+            <h3>Todas las Reservas</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Estudiante</th>
+                  <th>Aula</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Propósito</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="all-reservations-body">
+                <!-- Todas las reservas se cargarán dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          id="profile"
+          class="tab-content"
+        >
+          <h2>Mi Perfil</h2>
+          <div id="profile-info">
+            <p><strong>Nombre:</strong> <span id="profile-name"></span></p>
+            <p><strong>Correo:</strong> <span id="profile-email"></span></p>
+            <p><strong>Carné/ID:</strong> <span id="profile-id"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
